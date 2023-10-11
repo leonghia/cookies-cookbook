@@ -33,7 +33,7 @@ To run the Cookies Cookbook application, you need to have the following prerequi
 ### Installation
 1. Clone the repository to your local machine.
    ```sh
-   git clone https://github.com/yourusername/cookies-cookbook.git
+   git clone https://github.com/leonghia/cookies-cookbook.git
    ```
 
 2. Navigate to the project directory.
