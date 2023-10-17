@@ -16,12 +16,17 @@ public class RecipesConsoleUserInteraction : IRecipesUserInteraction
         {
             Console.WriteLine("Existing recipes are:" + Environment.NewLine);
 
-            for (var i = 0; i < allRecipes.Count; i++)
-            {
-                Console.WriteLine($"******{i + 1}******");
-                Console.WriteLine(allRecipes[i]);
-                Console.WriteLine();
-            }
+            //for (var i = 0; i < allRecipes.Count; i++)
+            //{
+            //    Console.WriteLine($"******{i + 1}******");
+            //    Console.WriteLine(allRecipes[i]);
+            //    Console.WriteLine();
+            //}
+
+            var allRecipesAsStrings = allRecipes
+                .Select<Recipe, string>((e, i) => $"******{i + 1}******" + Environment.NewLine + e.ToString());
+
+            Console.WriteLine(string.Join(Environment.NewLine, allRecipesAsStrings));
         }
     }
 

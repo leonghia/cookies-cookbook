@@ -1,5 +1,6 @@
 ﻿using CookiesCookbookKrystyna.DataAccess;
 using CookiesCookbookKrystyna.Recipes;
+using CookiesCookbookKrystyna.Recipes.Ingredients;
 
 public class RecipesRepository : IRecipesRepository
 {
@@ -14,28 +15,21 @@ public class RecipesRepository : IRecipesRepository
 
     public IEnumerable<Recipe> Read(string filePath)
     {
-        var recipes = new List<Recipe>();
-        List<string> allRecipesAsStrings = _stringsRepository.Read(filePath).ToList<string>();
+        List<string> allRecipesAsStrings = _stringsRepository.Read(filePath).ToList<string>();     
 
-        foreach (var s in allRecipesAsStrings)
-        {
-            var recipeIngredientsStringArr = s.Split(SEPARATOR);
-            var ingredients = recipeIngredientsStringArr.Select(stringId => IngredientsRegister.GetById(int.Parse(stringId)));
-            var recipe = new Recipe(ingredients);
-            recipes.Add(recipe);
-        }
-        return recipes;
+        return allRecipesAsStrings
+            .Select<string, Recipe>(s => new Recipe(s.Split(SEPARATOR)
+                .Select(stringId => IngredientsRegister.GetById(int.Parse(stringId)))));
     }
 
     public void Write(string filePath, List<Recipe> allRecipes)
     {
-        var allRecipesAsStrings = new List<string>();
 
-        foreach (var r in allRecipes)
-        {
-            var ingredients = r.Ingredients.Select(i => i.Id);
-            allRecipesAsStrings.Add(string.Join(SEPARATOR, ingredients));
-        }
+        var allRecipesAsStrings = allRecipes
+            .Select<Recipe, string>(r => string
+                .Join(SEPARATOR, r.Ingredients
+                    .Select(i => i.Id)))
+            .ToList<string>();
 
         _stringsRepository.Write(filePath, allRecipesAsStrings);
     }

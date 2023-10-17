@@ -16,12 +16,11 @@ namespace CookiesCookbookKrystyna.Recipes
         }
 
         public override string ToString()
-        {
-            var output = new List<string>();
-            foreach (var i in Ingredients)
-            {
-                output.Add(i.Describe());
-            }
+        {       
+
+            var output = Ingredients
+                .Select<Ingredient, string>(i =>  i.Describe());
+
             return string.Join(Environment.NewLine, output);
         }
     }

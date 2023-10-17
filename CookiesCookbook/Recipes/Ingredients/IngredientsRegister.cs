@@ -14,5 +14,12 @@ public static class IngredientsRegister
         new CocoaPowder()
     };
 
-    public static Ingredient GetById(int id) => All.FirstOrDefault<Ingredient>(i => i.Id == id, null);
+    public static Ingredient GetById(int id)
+    {
+        var results = All.Where<Ingredient>(i => i.Id == id);
+
+        if (results.Count() > 1) throw new InvalidOperationException($"More than one ingredients have ID equal to {id}.");
+
+        return results.First();
+    }
 }
